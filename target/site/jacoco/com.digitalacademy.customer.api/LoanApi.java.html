@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoanApi.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">customer-2</a> &gt; <a href="index.source.html" class="el_package">com.digitalacademy.customer.api</a> &gt; <span class="el_source">LoanApi.java</span></div><h1>LoanApi.java</h1><pre class="source lang-java linenums">package com.digitalacademy.customer.api;
+
+
+import com.digitalacademy.customer.model.response.GetLoanInfoResponse;
+import com.digitalacademy.customer.util.Util;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestTemplate;
+
+import java.net.URI;
+
+@Component
+public class LoanApi {
+    private RestTemplate restTemplate;
+
+    @Value(&quot;${spring.loan.host}&quot;)
+    private String host;
+
+    @Value(&quot;${spring.loan.endpoint.getInfo}&quot;)
+    private String getInfo;
+
+    @Autowired
+<span class="fc" id="L29">    public LoanApi(RestTemplate restTemplate){</span>
+<span class="fc" id="L30">        this.restTemplate = restTemplate;</span>
+<span class="fc" id="L31">    }</span>
+
+    public GetLoanInfoResponse getLoanInfo(Long id) throws Exception{
+<span class="fc" id="L34">        String data = &quot;{}&quot;;</span>
+        try {
+<span class="fc" id="L36">            RequestEntity requestEntity = RequestEntity</span>
+<span class="fc" id="L37">                    .get(URI.create(host+&quot;/&quot;+getInfo+&quot;/&quot;+id))</span>
+<span class="fc" id="L38">                    .build();</span>
+
+<span class="fc" id="L40">            System.out.println(&quot;Request: &quot;+</span>
+<span class="fc" id="L41">                requestEntity.getMethod() + &quot;Url&quot; + requestEntity.getUrl());</span>
+<span class="fc" id="L42">            ResponseEntity&lt;String&gt; response =</span>
+<span class="fc" id="L43">                    restTemplate.exchange(requestEntity,String.class);</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">            if (response.getStatusCode().value() == 200){</span>
+<span class="fc" id="L45">                JSONObject resp = new JSONObject(response.getBody());</span>
+<span class="fc" id="L46">                JSONObject status = new JSONObject(resp.getString(&quot;status&quot;));</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">                if (status.getString(&quot;code&quot;).equals(&quot;0&quot;)){</span>
+<span class="fc" id="L48">                    data = resp.get(&quot;data&quot;).toString();</span>
+                }
+            }
+<span class="nc" id="L51">        }catch (final HttpClientErrorException httpClientErrorException){</span>
+<span class="nc" id="L52">            System.out.println(&quot;httpClientErrorException: &quot;+ httpClientErrorException);</span>
+<span class="nc" id="L53">        }catch (final HttpServerErrorException httpServerErrorException){</span>
+<span class="nc" id="L54">            System.out.println(&quot;httpServerErrorException: &quot; + httpServerErrorException);</span>
+<span class="nc" id="L55">        }catch (Exception exception){</span>
+<span class="nc" id="L56">            throw exception;</span>
+<span class="pc" id="L57">        }</span>
+<span class="fc" id="L58">        return Util.readValue(data, GetLoanInfoResponse.class);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

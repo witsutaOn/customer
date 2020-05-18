@@ -1,0 +1,11 @@
+/Users/s91784/Downloads/customer-2/src/main/java/com/digitalacademy/customer/config/RestTemplateConfig.java
+/Users/s91784/Downloads/customer-2/src/main/java/com/digitalacademy/customer/controller/LoanController.java
+/Users/s91784/Downloads/customer-2/src/main/java/com/digitalacademy/customer/util/Util.java
+/Users/s91784/Downloads/customer-2/src/main/java/com/digitalacademy/customer/model/response/GetLoanInfoResponse.java
+/Users/s91784/Downloads/customer-2/src/main/java/com/digitalacademy/customer/service/CustomerService.java
+/Users/s91784/Downloads/customer-2/src/main/java/com/digitalacademy/customer/repositories/CustomerRepository.java
+/Users/s91784/Downloads/customer-2/src/main/java/com/digitalacademy/customer/Application.java
+/Users/s91784/Downloads/customer-2/src/main/java/com/digitalacademy/customer/api/LoanApi.java
+/Users/s91784/Downloads/customer-2/src/main/java/com/digitalacademy/customer/controller/CustomerController.java
+/Users/s91784/Downloads/customer-2/src/main/java/com/digitalacademy/customer/model/Customer.java
+/Users/s91784/Downloads/customer-2/src/main/java/com/digitalacademy/customer/security/SecurityConf.java

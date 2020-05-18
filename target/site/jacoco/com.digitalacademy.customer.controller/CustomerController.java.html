@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">customer-2</a> &gt; <a href="index.source.html" class="el_package">com.digitalacademy.customer.controller</a> &gt; <span class="el_source">CustomerController.java</span></div><h1>CustomerController.java</h1><pre class="source lang-java linenums">package com.digitalacademy.customer.controller;
+
+import com.digitalacademy.customer.model.Customer;
+import com.digitalacademy.customer.service.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.xml.ws.Response;
+import java.util.List;
+
+@RestController
+@RequestMapping(path = &quot;/customer&quot;)
+public class CustomerController {
+
+    private CustomerService customerService;
+
+    @Autowired
+<span class="fc" id="L21">    public CustomerController(CustomerService customerService){</span>
+<span class="fc" id="L22">        this.customerService = customerService;</span>
+<span class="fc" id="L23">    }</span>
+
+    //show all in database
+    @RequestMapping(&quot;/list&quot;)
+    public List&lt;Customer&gt; getAllCustomer(){
+<span class="fc" id="L28">        return customerService.getCustomerList();</span>
+    }
+
+    //find by id
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;?&gt; getCustomerById(@PathVariable Long id) {
+<span class="fc" id="L34">        Customer customer = customerService.getCustomer(id);</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (customer != null) {</span>
+<span class="fc" id="L36">            return ResponseEntity.ok(customer);</span>
+        } else {
+<span class="fc" id="L38">            return ResponseEntity.notFound().build();</span>
+        }
+        //return customer != null ? ResponseEntity.ok(customer) : ResponseEntity.notFound().build();
+    }
+
+    //find by name ?name=&quot;name&quot;
+    @GetMapping(params = &quot;name&quot;)
+    public ResponseEntity&lt;?&gt; getCustomerById(@RequestParam(value = &quot;name&quot;) String name){
+<span class="fc" id="L46">        List&lt;Customer&gt; customer = customerService.getCustomerName(name);</span>
+<span class="fc bfc" id="L47" title="All 4 branches covered.">        return customer != null &amp;&amp; !customer.isEmpty() ? ResponseEntity.ok(customer):</span>
+<span class="fc" id="L48">                ResponseEntity.notFound().build();</span>
+    }
+
+    //create customer to database
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity&lt;?&gt; createCustomer(@Valid @RequestBody Customer body){
+<span class="fc" id="L54">        Customer customer = customerService.createCustomer(body);</span>
+<span class="fc" id="L55">        return ResponseEntity.status(HttpStatus.CREATED).body(customer);</span>
+    }
+    @PutMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;?&gt; putCustomer(@PathVariable Long id, @Valid @RequestBody Customer body){
+<span class="fc" id="L59">        body.setId(id);</span>
+<span class="fc" id="L60">        Customer customer = customerService.updateCustomer(id, body);</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        return customer != null ? ResponseEntity.ok(customer):</span>
+<span class="fc" id="L62">                ResponseEntity.notFound().build();</span>
+    }
+
+    @DeleteMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;?&gt; deleteCustomer(@PathVariable Long id){
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        return customerService.deleteById(id) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
