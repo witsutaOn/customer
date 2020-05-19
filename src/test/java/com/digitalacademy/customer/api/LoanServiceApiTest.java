@@ -10,9 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -129,5 +131,23 @@ public class LoanServiceApiTest {
 
     }
 
-//    @DisplayName("Test get loan info should return client")
+    @DisplayName("Test get loan info should return client Exception")
+    @Test
+    void testGetLoanInfoReturnClientException() throws Exception {
+        Long reqId = 3L;
+
+        Mockito.when(restTemplate.exchange(
+                ArgumentMatchers.<RequestEntity<String>>any(),
+                ArgumentMatchers.<Class<String>>any()))
+                .thenThrow(HttpClientErrorException.class);
+
+        Exception thrown = assertThrows(Exception.class,
+                () -> loanApi.getLoanInfo(reqId),
+                "Expect getLoanInfo(reqId) to throw, but it didn't");
+
+        assertEquals("HttpClientErrorException", thrown.getMessage());
+        verify(restTemplate, times(1)).exchange(ArgumentMatchers.<RequestEntity<String>>any(), ArgumentMatchers.<Class<String>>any());
+
+    }
+
 }

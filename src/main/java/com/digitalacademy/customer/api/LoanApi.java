@@ -49,7 +49,7 @@ public class LoanApi {
                 }
             }
         }catch (final HttpClientErrorException httpClientErrorException){
-            System.out.println("httpClientErrorException: "+ httpClientErrorException);
+            System.out.println("httpClientErrorException: " + httpClientErrorException);
         }catch (final HttpServerErrorException httpServerErrorException){
             System.out.println("httpServerErrorException: " + httpServerErrorException);
         }catch (Exception exception){
